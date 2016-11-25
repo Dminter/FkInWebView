@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
 public class MyApplication extends Application {
     public Context ctx;
     public static MyApplication instance;
-    ClipboardManager cb;
+    private ClipboardManager cb;
     private SharedPreferences mySharedPreferences;
     private boolean isCopyListen;
 
@@ -21,15 +21,12 @@ public class MyApplication extends Application {
         this.ctx = this.getApplicationContext();
         instance = this;
         mySharedPreferences = getSharedPreferences("setting", Activity.MODE_PRIVATE);
-
         cb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         cb.setPrimaryClip(ClipData.newPlainText("", ""));
         cb.addPrimaryClipChangedListener(new ClipboardManager.OnPrimaryClipChangedListener() {
 
             @Override
             public void onPrimaryClipChanged() {
-//                ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-//                ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
                 // 具体实现
                 try {
                     String content = cb.getText().toString();
@@ -38,7 +35,7 @@ public class MyApplication extends Application {
                         LinkService.linkClick(content);
                     }
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
 
             }
